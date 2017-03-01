@@ -1,0 +1,19 @@
+install python with brew
+brew install python
+
+had to fix issues due to OS upgrade
+
+Install Scapy to do the wifi scanning
+sudo port install scapy
+
+http://hackoftheday.securitytube.net/2013/03/wi-fi-sniffer-in-10-lines-of-python.html
+
+Decided to go with airport utility built into mac osx
+scapy is pretty old and was giving me too many problems, this makes this application mac specific
+but could be easily modified to use anything else
+
+Built database module and got the graphing working.  Decided not to used GPX file format as we can
+just pull directly from the DB to do the graphing.  
+
+Need to add option to have different sessions on the same db, or I will have to switch out a copy for every run
+
