@@ -13,7 +13,7 @@ from wt_database import database_close
 from wt_database import database_commit
 import datetime
 print datetime.datetime.utcnow().isoformat()
-HOST, PORT = "10.0.1.10", 11121
+HOST, PORT = "172.20.10.2", 11121
 
 class MyTCPHandler(SocketServer.BaseRequestHandler):
     """

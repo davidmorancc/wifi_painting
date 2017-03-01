@@ -35,6 +35,8 @@ for mac in database_get_macs():
 	lat = []
 	lon = []
 
+print "Total MACs seen:",len(database_get_macs())
+
 #create the graph and save
 timestamp = int(time.time())
 filename = 'output/wifi_routes_' + str(timestamp) +'.png'

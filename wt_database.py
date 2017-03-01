@@ -39,8 +39,7 @@ def database_empty():
 
 #mac, ssid, rssi, timestamp, lat, long, alt
 def database_insert(mac,ssid,rssi,lat,long,alt,time):
-	database.execute("INSERT INTO log (mac,ssid,rssi,lat,long,alt,time) \
-		VALUES ('" + mac + "', '" + ssid + "', '" + rssi + "', '" + lat + "', '" + long + "', '" + alt + "', '" + time + "')")
+	database.execute("INSERT INTO log (mac,ssid,rssi,lat,long,alt,time) VALUES (?,?,?,?,?,?,?)", (mac, ssid, rssi, lat, long, alt, time))
 	return
 	
 #commit and close the database	
