@@ -9,7 +9,7 @@
 import sqlite3
 import sys
 
-connection = sqlite3.connect('log.db')
+connection = sqlite3.connect('db/log.db')
 database = connection.cursor()
 
 #function to create a new database and setup the tables
