@@ -16,6 +16,7 @@ database = connection.cursor()
 def database_create():	
 	#create our table
 	database.execute('''CREATE TABLE `log` (
+	`route`	TEXT,
 	`mac`	TEXT,
 	`ssid`	TEXT,
 	`rssi`	TEXT,
@@ -37,9 +38,9 @@ def database_empty():
 	connection.commit()
 	return
 
-#mac, ssid, rssi, timestamp, lat, long, alt
-def database_insert(mac,ssid,rssi,lat,long,alt,time):
-	database.execute("INSERT INTO log (mac,ssid,rssi,lat,long,alt,time) VALUES (?,?,?,?,?,?,?)", (mac, ssid, rssi, lat, long, alt, time))
+#route, mac, ssid, rssi, timestamp, lat, long, alt
+def database_insert(route, mac,ssid,rssi,lat,long,alt,time):
+	database.execute("INSERT INTO log (route, mac,ssid,rssi,lat,long,alt,time) VALUES (?,?,?,?,?,?,?,?)", (route, mac, ssid, rssi, lat, long, alt, time))
 	return
 	
 #commit and close the database	
@@ -55,7 +56,7 @@ def database_commit():
 	
 #returns a list of all the entries for the given mac address
 def database_search_mac(mac):	
-	database.execute("SELECT mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = '" + mac + "'")
+	database.execute("SELECT route,mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = '" + mac + "'")
 	rows = database.fetchall()
 	return rows
 
