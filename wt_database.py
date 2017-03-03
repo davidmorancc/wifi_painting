@@ -29,6 +29,8 @@ def database_create():
 	#go ahead commit the database
 	connection.commit()
 	
+	print "Created new database and commited"
+	
 	return
 
 #function to empty the database
@@ -36,6 +38,8 @@ def database_empty():
 	database.execute("DELETE FROM log")
 	database.execute("VACUUM")
 	connection.commit()
+	
+	print "Cleared database and commited"
 	return
 
 #route, mac, ssid, rssi, timestamp, lat, long, alt
@@ -55,14 +59,14 @@ def database_commit():
 	return 
 	
 #returns a list of all the entries for the given mac address
-def database_search_mac(mac):	
-	database.execute("SELECT route,mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = '" + mac + "'")
+def database_search_mac(mac, route):	
+	database.execute("SELECT route,mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = ? AND route = ?",(mac,route,))
 	rows = database.fetchall()
 	return rows
 
 #returns a list of all mac addresses found	
-def database_get_macs():	
-	database.execute("SELECT DISTINCT mac FROM log")
+def database_get_macs(route):	
+	database.execute("SELECT DISTINCT mac FROM log WHERE route=?", (route,))
 	rows = database.fetchall()
 	return rows
 

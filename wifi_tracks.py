@@ -54,7 +54,8 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
 						#print a line
 						print "Route: %s Time: %s Lat: %s Long: %s Alt: %s Mac: %s RSSI: %s SSID: %s" % (route, date_iso8601,str(gps_data[0]),str(gps_data[1]),str(gps_data[2]),wifi_network[0],wifi_network[2],wifi_network[1])
 
-					database_commit()
+					database_commit()	#commit the sqlite file so we don't lose data in a crash
+					
 			except KeyboardInterrupt:
 				print "Closing server..."
 				break

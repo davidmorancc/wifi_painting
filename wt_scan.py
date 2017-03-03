@@ -23,8 +23,8 @@ def getWifi():
 	process = subprocess.Popen([AIRPORT_PATH, "--scan"], stdout=subprocess.PIPE)
 	#pipe the output to a string
 	out, err = process.communicate()
-	#airport likes a 1 sec delay between runs otherwise it misses
-	time.sleep(1)
+	#airport likes a 1 sec delay between runs otherwise it misses, 
+	#time.sleep(1) #think i fixed this by running as su
 
 	for line in out.splitlines():
 
