@@ -14,6 +14,7 @@ import random
 
 lat = []
 lon = []
+rssi = []
 
 fig = plt.figure(facecolor = '0.05')
 ax = plt.Axes(fig, [0., 0., 1., 1.], )
@@ -34,20 +35,24 @@ for mac in database_get_macs("orange"):
 		
 		lat.append(float(line[4])+(shake*.0001))
 		lon.append(float(line[5])+(shake2*.0001))
+		rssi.append(abs(int(line[3]))/4)
+		plt.plot((float(line[4])+(shake*.0001)), (float(line[5])+(shake2*.0001)), color = 'darkorange', lw = 0.25, alpha = 0.5)
 
 	#take the lat and long lists and plot them
 	print "Plotting data for MAC Address:",str(mac[0])
-	plt.plot(lon, lat, color = 'darkorange', lw = 0.25, alpha = 0.5)
+	#plt.plot(lon, lat, color = 'darkorange', lw = 0.25, alpha = 0.5)
+	#plt.scatter(lon, lat, color = 'darkorange', s = rssi, alpha = 0.1)
 
 	lat = []
 	lon = []
+	rssi = []
 
 print "Total MACs seen:",len(database_get_macs("orange"))
 
 #create the graph and save
 timestamp = int(time.time())
 filename = 'output/wifi_routes_' + str(timestamp) +'.png'
-plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=1500)
+plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=300)
 
 #opens the file we just created in the os default program
 print "Opening File..."
