@@ -14,7 +14,7 @@ from wt_database import database_commit
 import datetime
 import sys, getopt
 
-print datetime.datetime.utcnow().isoformat()
+print "wifi_tracks started at: ",datetime.datetime.utcnow().isoformat()
 
 HOST, PORT = "", 11121
 route = ''
@@ -35,9 +35,12 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
 			try:
 				self.data = self.request.recv(1024).strip()
 				
+				#break 
 				count += 1
 				if count > 2000000:
 					break
+					
+				#only run if we actually get data from the client
 				if self.data:
 					count = 0
 					gps_data = convert_gpgga(self.data)
@@ -60,6 +63,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
 				print "Closing server..."
 				break
 
+#parse out our command line arguments
 def parse_arg(argv):
 	global route
 	route = 0
@@ -94,6 +98,7 @@ if __name__ == "__main__":
 		server.serve_forever()
 	except KeyboardInterrupt:
 		pass
+		
 	print "Closing server..."
 	server.server_close()
 	database_close()

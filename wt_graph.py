@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #########################################################################################
-#	wr_graph																			#
+#	wt_graph																			#
 #  	This utility runs the airport utility included on OSX and parses the output to		#
 #	include mac, ssid, and rssi															#
 #########################################################################################
@@ -10,50 +10,92 @@ from wt_database import database_get_macs
 from wt_database import database_search_mac
 import os
 import time
-import random
+import random, sys,  getopt
 
-lat = []
-lon = []
-rssi = []
+lat 	= []
+lon 	= []
+rssi 	= []
 
-fig = plt.figure(facecolor = '0.05')
-ax = plt.Axes(fig, [0., 0., 1., 1.], )
-ax.set_aspect('equal')
-ax.set_axis_off()
-fig.add_axes(ax)
+shake 	= 0
+shake2	= 0
+route 	= ''
 
-shake = 0
-shake2=0
-#get a list of all seen macs
-for mac in database_get_macs("orange"):
+#parse out our command line arguments
+def parse_arg(argv):
+	global route
+	route = '%'
+	try:
+		opts, args = getopt.getopt(argv,"h:r",["help","route="])
+	except getopt.GetoptError:
+		print 'wt_graph.py --route=<routeid>'
+		sys.exit(2)
+	for opt, arg in opts:
+		if opt == '-h':
+			print 'wt_graph.py --route=<routeid>'
+			sys.exit()
+		elif opt in ("-r", "--route"):
+			route = arg	
 
-	#get all the log entries for a single mac
-	shake = random.randrange(1,33)
-	shake2 = random.randrange(1,33)
+def mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
+    
+def get_line_color(rssi):
+	rssi = abs(mean(rssi))
 	
-	for line in database_search_mac(mac[0],"orange"):
+	if rssi <= 50:
+		line_color = 'orangered'
+	elif rssi <= 60:
+		line_color = 'chocolate'
+	elif rssi <= 70:
+		line_color = 'yellow'
+	elif rssi <= 80:
+		line_color = 'orange'
+	elif rssi <= 90:
+		line_color = 'darkorange'
+	elif rssi <= 100:
+		line_color = 'coral'
 		
-		lat.append(float(line[4])+(shake*.0001))
-		lon.append(float(line[5])+(shake2*.0001))
-		rssi.append(abs(int(line[3]))/4)
-		plt.plot((float(line[4])+(shake*.0001)), (float(line[5])+(shake2*.0001)), color = 'darkorange', lw = 0.25, alpha = 0.5)
+	return line_color
 
-	#take the lat and long lists and plot them
-	print "Plotting data for MAC Address:",str(mac[0])
-	#plt.plot(lon, lat, color = 'darkorange', lw = 0.25, alpha = 0.5)
-	#plt.scatter(lon, lat, color = 'darkorange', s = rssi, alpha = 0.1)
+if __name__ == "__main__":
+	#parse the arguments
+	parse_arg(sys.argv[1:])
 
-	lat = []
-	lon = []
-	rssi = []
+	fig = plt.figure(facecolor = '0.05')
+	ax = plt.Axes(fig, [0., 0., 1., 1.], )
+	ax.set_aspect('equal')
+	ax.set_axis_off()
+	fig.add_axes(ax)
 
-print "Total MACs seen:",len(database_get_macs("orange"))
+	#get a list of all seen macs
+	for mac in database_get_macs(route):
 
-#create the graph and save
-timestamp = int(time.time())
-filename = 'output/wifi_routes_' + str(timestamp) +'.png'
-plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=300)
+		#get two random numbers to 'shake' the plot line
+		shake = random.randrange(1,33) * .0001
+		shake2 = random.randrange(1,33) * .0001
+	
+		#get all the log entries for a single mac
+		for line in database_search_mac(mac[0],route):
+			lat.append(float(line[4])+shake)
+			lon.append(float(line[5])+shake2)
+			rssi.append(int(line[3]))
+			
+		#take the lat and long lists and plot them
+		plt.plot(lon, lat, color = get_line_color(rssi), lw = 0.25, alpha = 0.5)
+		print "Plotting data for MAC Address:",str(mac[0])
 
-#opens the file we just created in the os default program
-print "Opening File..."
-os.system("open "+filename)
+		lat = []
+		lon = []
+		rssi = []
+
+	print "Total MACs seen:",len(database_get_macs(route)),"\tRoute set to:",route
+
+	#create the graph and save
+	timestamp = int(time.time())
+	filename = 'output/wifi_routes_' + str(timestamp) +'.png'
+	plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=1500)
+
+	#opens the file we just created in the os default program
+	print "Opening File..."
+	os.system("open "+filename)
+
