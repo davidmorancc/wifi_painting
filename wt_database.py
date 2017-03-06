@@ -60,17 +60,15 @@ def database_commit():
 	
 #returns a list of all the entries for the given mac address
 def database_search_mac(mac, route):
-	rows = []	
-	for line in route.split(","):
-		database.execute("SELECT route,mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = ? AND route LIKE ?",(mac,line,))
-		rows = rows + database.fetchall()
+	database.execute("SELECT route,mac,ssid,rssi,lat,long,alt,time FROM log WHERE mac = ? AND route LIKE ?",(mac,route,))
+	rows = database.fetchall()
 	return rows
 
 #returns a list of all mac addresses found	
 def database_get_macs(route):	
 	rows = []
 	for line in route.split(","):
-		database.execute("SELECT DISTINCT mac FROM log WHERE route LIKE ?", (line,))
+		database.execute("SELECT DISTINCT mac, '"+line+"' FROM log WHERE route LIKE ?", (line,))
 		rows = rows + database.fetchall()
 	return rows
 

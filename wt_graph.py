@@ -89,18 +89,18 @@ if __name__ == "__main__":
 	for mac in database_get_macs(route):
 
 		#get two random numbers to 'shake' the plot line
-		shake = random.randrange(1,33) * .0001
-		shake2 = random.randrange(1,33) * .0001
+		shake = random.randrange(1,44) * .0001
+		shake2 = random.randrange(1,44) * .0001
 	
 		#get all the log entries for a single mac
-		for line in database_search_mac(mac[0],route):
+		for line in database_search_mac(mac[0],mac[1]):
 			lat.append(float(line[4])+shake)
 			lon.append(float(line[5])+shake2)
 			rssi.append(int(line[3]))
 			
 		#take the lat and long lists and plot them
 		plt.plot(lon, lat, color = get_line_color(rssi), lw = get_line_width(rssi), alpha = 0.5)
-		print "Plotting data for MAC Address:",str(mac[0])
+		print "PLOTTING: MAC Address:",str(mac[0]),"Route:",str(mac[1])
 
 		lat = []
 		lon = []
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 	#create the graph and save
 	timestamp = int(time.time())
 	filename = 'output/wifi_routes_' + str(timestamp) +'.png'
-	plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=300)
+	plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=3000)
 
 	#opens the file we just created in the os default program
 	print "Opening File..."
