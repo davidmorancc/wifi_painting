@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #########################################################################################
-#	wifiScan																			#
+#	wt_scan																				#
 #  	This utility runs the airport utility included on OSX and parses the output to		#
 #	include mac, ssid, and rssi															#
 #########################################################################################
@@ -24,7 +24,7 @@ def getWifi():
 	#pipe the output to a string
 	out, err = process.communicate()
 	#airport likes a 1 sec delay between runs otherwise it misses, 
-	#time.sleep(1) #think i fixed this by running as su
+	#time.sleep(1) #fixed this by running as su
 
 	for line in out.splitlines():
 

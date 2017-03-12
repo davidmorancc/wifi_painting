@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #########################################################################################
-#	wr_database																			#
+#	wt_database																			#
 #  	This utility is to handle the database setup and read/writing						#
 #	Accepts the command line arguments 'create' and 'empty' to handle setting up a new  #
 #	database if the file gets delete and clearing out the database after exporting data #

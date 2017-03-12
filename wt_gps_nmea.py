@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #########################################################################################
-#	gps_nmea																			#
+#	wt_gps_nmea																			#
 #  	This utility converts gps formated in the NMEA GPGGA format to lat, long, and alt	#	
 #	Other formats can easily be added using the pynmea library, I didn't have any need	#
 #########################################################################################

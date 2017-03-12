@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #########################################################################################
-#	wifiRoutes																			#
+#	wifi_tracks																			#
 #  	This utility runs the airport utility included on OSX and parses the output to		#
 #	include mac, ssid, and rssi															#
 #########################################################################################
@@ -73,7 +73,7 @@ def parse_arg(argv):
 		print 'wifi_tracks.py --route=<routeid>'
 		sys.exit(2)
 	for opt, arg in opts:
-		if opt == '-h':
+		if opt in ("-h", "--help"):
 			print 'wifi_tracks.py --route=<routeid>'
 			sys.exit()
 		elif opt in ("-r", "--route"):

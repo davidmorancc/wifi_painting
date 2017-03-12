@@ -5,6 +5,10 @@
 #	include mac, ssid, and rssi															#
 #########################################################################################
 
+shake_amount 		= 44
+background_color 	= 'black'
+
+
 import matplotlib.pyplot as plt
 from wt_database import database_get_macs
 from wt_database import database_search_mac
@@ -30,7 +34,7 @@ def parse_arg(argv):
 		print 'wt_graph.py --route=<routeid>[,<routeid2>,...]'
 		sys.exit(2)
 	for opt, arg in opts:
-		if opt == '-h':
+		if opt in ("-h", "--help"):
 			print 'wt_graph.py --route=<routeid>[,<routeid2>,...]'
 			sys.exit()
 		elif opt in ("-r", "--route"):
@@ -79,7 +83,7 @@ if __name__ == "__main__":
 	#parse the arguments
 	parse_arg(sys.argv[1:])
 
-	fig = plt.figure(facecolor = '0.05')
+	fig = plt.figure(facecolor = background_color)
 	ax = plt.Axes(fig, [0., 0., 1., 1.], )
 	ax.set_aspect('equal')
 	ax.set_axis_off()
@@ -89,8 +93,8 @@ if __name__ == "__main__":
 	for mac in database_get_macs(route):
 
 		#get two random numbers to 'shake' the plot line
-		shake = random.randrange(1,44) * .0001
-		shake2 = random.randrange(1,44) * .0001
+		shake = random.randrange(1,shake_amount) * .0001
+		shake2 = random.randrange(1,shake_amount) * .0001
 	
 		#get all the log entries for a single mac
 		for line in database_search_mac(mac[0],mac[1]):
@@ -100,7 +104,7 @@ if __name__ == "__main__":
 			
 		#take the lat and long lists and plot them
 		plt.plot(lon, lat, color = get_line_color(rssi), lw = get_line_width(rssi), alpha = 0.5)
-		print "PLOTTING: MAC Address:",str(mac[0]),"Route:",str(mac[1])
+		print "PLOTTING - MAC Address:",str(mac[0]),"Route:",str(mac[1])
 
 		lat = []
 		lon = []
@@ -110,7 +114,7 @@ if __name__ == "__main__":
 
 	#create the graph and save
 	timestamp = int(time.time())
-	filename = 'output/wifi_routes_' + str(timestamp) +'.png'
+	filename = 'output/wifi_tracks_' + str(timestamp) +'.png'
 	plt.savefig(filename, facecolor = fig.get_facecolor(), bbox_inches='tight', pad_inches=0, dpi=3000)
 
 	#opens the file we just created in the os default program

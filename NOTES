@@ -15,5 +15,4 @@ but could be easily modified to use anything else
 Built database module and got the graphing working.  Decided not to used GPX file format as we can
 just pull directly from the DB to do the graphing.  
 
-Need to add option to have different sessions on the same db, or I will have to switch out a copy for every run
 
