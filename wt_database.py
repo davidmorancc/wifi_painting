@@ -71,6 +71,14 @@ def database_get_macs(route):
 		database.execute("SELECT DISTINCT mac, '"+line+"' FROM log WHERE route LIKE ?", (line,))
 		rows = rows + database.fetchall()
 	return rows
+	
+#returns a list of all ssids found for the route given
+def database_get_ssids(route):	
+	rows = []
+	for line in route.split(","):
+		database.execute("SELECT ssid, count(ssid) FROM log WHERE route LIKE ? GROUP BY ssid", (line,))
+		rows = rows + database.fetchall()
+	return rows
 
 if __name__ == "__main__":
 	
