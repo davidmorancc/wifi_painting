@@ -32,6 +32,7 @@ def parse_arg(argv):
 			sys.exit()
 		elif opt in ("-r", "--route"):
 			route = arg	
+		
 			
 if __name__ == "__main__":
 	#parse the arguments

@@ -5,8 +5,14 @@
 #	include mac, ssid, and rssi															#
 #########################################################################################
 
+#sets the about of random 'shake' in the drawing
 shake_amount 		= 44
-background_color 	= 'black'
+#sets the bg color
+background_color 	= 'white'
+#default color table
+color_table = 'orange'
+
+color_table_orange = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
 
 
 import matplotlib.pyplot as plt
@@ -24,6 +30,7 @@ shake 	= 0
 shake2	= 0
 route 	= ''
 
+
 #parse out our command line arguments
 def parse_arg(argv):
 	global route
@@ -39,25 +46,33 @@ def parse_arg(argv):
 			sys.exit()
 		elif opt in ("-r", "--route"):
 			route = arg	
+		elif opt in ("-c", "--color"):
+			color_table = arg	
 
 def mean(numbers):
     return float(sum(numbers)) / max(len(numbers), 1)
-    
+
+#gets the color for the specified strength based on the color_table specified in the options or arguments
+def get_colortable(color_number):
+	
+	
+	return color_table_orange[color_number]
+
 def get_line_color(rssi):
 	rssi = abs(mean(rssi))
 	
 	if rssi <= 50:
-		line_color = 'orangered'
+		line_color = get_colortable(0)
 	elif rssi <= 60:
-		line_color = 'chocolate'
+		line_color = get_colortable(1)
 	elif rssi <= 70:
-		line_color = 'yellow'
+		line_color = get_colortable(2)
 	elif rssi <= 80:
-		line_color = 'orange'
+		line_color = get_colortable(3)
 	elif rssi <= 90:
-		line_color = 'darkorange'
+		line_color = get_colortable(4)
 	elif rssi <= 100:
-		line_color = 'coral'
+		line_color = get_colortable(5)
 		
 	return line_color
 	
@@ -65,17 +80,17 @@ def get_line_width(rssi):
 	rssi = abs(mean(rssi))
 	
 	if rssi <= 50:
-		line_width = .20
+		line_width = .55
 	elif rssi <= 60:
-		line_width = .25
-	elif rssi <= 70:
-		line_width = .30
-	elif rssi <= 80:
-		line_width = .40
-	elif rssi <= 90:
-		line_width = .45
-	elif rssi <= 100:
 		line_width = .50
+	elif rssi <= 70:
+		line_width = .45
+	elif rssi <= 80:
+		line_width = .30
+	elif rssi <= 90:
+		line_width = .25
+	elif rssi <= 100:
+		line_width = .20
 		
 	return line_width
 
@@ -88,6 +103,8 @@ if __name__ == "__main__":
 	ax.set_aspect('equal')
 	ax.set_axis_off()
 	fig.add_axes(ax)
+	
+
 
 	#get a list of all seen macs
 	for mac in database_get_macs(route):
