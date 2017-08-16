@@ -14,9 +14,9 @@ color_table = 'orange'
 
 #sets the color tables
 color_table_orange = ['#e8b999','#e8a87b','#e89960','#e88846','#e87424','#e86b15']
-color_table_blue = ['#004492','#104c91','#205491','#325e90','#42648c','#556d8a']
-color_table_red = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
-color_table_green = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
+color_table_blue = ['#004490','#104c90','#205490','#305e90','#406490','#506d90']
+color_table_red = ['#e00d0c','#e02726','#e04948','#e06766','#e08080','#e09b9b']
+color_table_green = ['#008445','#12824d','#258155','#38815e','#4f7f68','#5f7e6f']
 
 
 import matplotlib.pyplot as plt
