@@ -12,7 +12,11 @@ background_color 	= 'white'
 #default color table
 color_table = 'orange'
 
-color_table_orange = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
+#sets the color tables
+color_table_orange = ['#e8b999','#e8a87b','#e89960','#e88846','#e87424','#e86b15']
+color_table_blue = ['#004492','#104c91','#205491','#325e90','#42648c','#556d8a']
+color_table_red = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
+color_table_green = ['#e8b999','#e9a87b','#ea9960','#e88846','#e87424','#e76b15']
 
 
 import matplotlib.pyplot as plt
@@ -34,9 +38,10 @@ route 	= ''
 #parse out our command line arguments
 def parse_arg(argv):
 	global route
+	global color_table
 	route = '%'
 	try:
-		opts, args = getopt.getopt(argv,"h:r",["help","route="])
+		opts, args = getopt.getopt(argv,"h:r:c",["help","route=","color="])
 	except getopt.GetoptError:
 		print 'wt_graph.py --route=<routeid>[,<routeid2>,...]'
 		sys.exit(2)
@@ -54,9 +59,14 @@ def mean(numbers):
 
 #gets the color for the specified strength based on the color_table specified in the options or arguments
 def get_colortable(color_number):
-	
-	
-	return color_table_orange[color_number]
+	if color_table == 'orange':	
+		return color_table_orange[color_number]
+	if color_table == 'green':	
+		return color_table_green[color_number]
+	if color_table == 'blue':	
+		return color_table_blue[color_number]
+	if color_table == 'red':	
+		return color_table_red[color_number]		
 
 def get_line_color(rssi):
 	rssi = abs(mean(rssi))
@@ -104,6 +114,7 @@ if __name__ == "__main__":
 	ax.set_axis_off()
 	fig.add_axes(ax)
 	
+	print "Route set to:",route,"\tColor set to:",color_table
 
 
 	#get a list of all seen macs
@@ -127,7 +138,7 @@ if __name__ == "__main__":
 		lon = []
 		rssi = []
 
-	print "Total MACs seen:",len(database_get_macs(route)),"\tRoute set to:",route
+	print "Total MACs seen:",len(database_get_macs(route)),"\tRoute set to:",route,"\tColor set to:",color_table
 
 	#create the graph and save
 	timestamp = int(time.time())
